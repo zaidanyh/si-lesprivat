@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\DataController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\StudentController;
@@ -36,4 +37,12 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         'schedule' => ScheduleController::class,
         'attendance' => AttendanceController::class,
     ]);
+});
+
+Route::prefix('json')->middleware('auth')->group(function () {
+    Route::get('teacher', [DataController::class, 'teacher']);
+    Route::get('student', [DataController::class, 'student']);
+    Route::get('subject', [DataController::class, 'subject']);
+    Route::get('schedule', [DataController::class, 'subject']);
+    Route::get('attendance', [DataController::class, 'subject']);
 });

@@ -14,9 +14,7 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        $teacher = Teacher::find(8);
-
-        dd($teacher->schedules);
+        return view('admin.teacher.index');
     }
 
     /**

@@ -12,6 +12,8 @@ class Student extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
 
+    protected $hidden = ['password'];
+
     public function schedules()
     {
         return $this->hasMany('App\Models\Schedule');

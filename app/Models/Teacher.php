@@ -12,6 +12,8 @@ class Teacher extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
 
+    protected $hidden = ['password'];
+
     public function subjects()
     {
         return $this->belongsToMany(

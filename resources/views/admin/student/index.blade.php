@@ -7,6 +7,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Data Siswa</h6>
         </div>
         <div class="card-body">
+            <a href="{{ route('student.create') }}" class="btn btn-primary mb-3">Tambah</a>
             <div class="table-responsive">
                 <table class="table table-bordered student-table" id="student-table" width="100%" cellspacing="0">
                     <thead>

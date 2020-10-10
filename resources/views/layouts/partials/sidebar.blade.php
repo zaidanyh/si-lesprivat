@@ -41,18 +41,18 @@
         Manajemen
     </div>
 
-    <!-- Nav Item - Charts -->
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('student.index') }}">
-            <i class="fas fa-fw fa-graduation-cap"></i>
-            <span>Siswa</span></a>
-    </li>
-
     <!-- Nav Item - Tables -->
     <li class="nav-item">
         <a class="nav-link" href="{{ route('teacher.index') }}">
             <i class="fas fa-fw fa-user-secret"></i>
             <span>Guru</span></a>
+    </li>
+
+    <!-- Nav Item - Charts -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('student.index') }}">
+            <i class="fas fa-fw fa-graduation-cap"></i>
+            <span>Siswa</span></a>
     </li>
 
     <li class="nav-item">

@@ -24,7 +24,7 @@ class TeacherController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.teacher.create');
     }
 
     /**
@@ -57,7 +57,7 @@ class TeacherController extends Controller
      */
     public function edit(Teacher $teacher)
     {
-        //
+        return view('admin.teacher.edit');
     }
 
     /**

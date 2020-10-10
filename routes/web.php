@@ -35,14 +35,12 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         'student' => StudentController::class,
         'subject' => SubjectController::class,
         'schedule' => ScheduleController::class,
-        'attendance' => AttendanceController::class,
     ]);
+    Route::resource('attendance', AttendanceController::class)->only(['index']);
 });
 
 Route::prefix('json')->middleware('auth')->group(function () {
     Route::get('teacher', [DataController::class, 'teacher']);
     Route::get('student', [DataController::class, 'student']);
     Route::get('subject', [DataController::class, 'subject']);
-    Route::get('schedule', [DataController::class, 'subject']);
-    Route::get('attendance', [DataController::class, 'subject']);
 });

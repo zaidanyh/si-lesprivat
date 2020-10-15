@@ -23,12 +23,11 @@ class ScheduleFactory extends Factory
     public function definition()
     {
         return [
-            'date' => $this->faker->dateTimeBetween('-7 days', '-1 days'),
-            'time_start' => $this->faker->dateTimeBetween('-7 days', '-1 days'),
-            'time_end' => $this->faker->dateTimeBetween('-7 days', '-1 days'),
-            'student_id' => rand(1, 15),
-            'teacher_subject_id' => rand(1, 10),
-            'status' => $this->faker->randomElement(['Tepat Waktu', 'Terlambat']),
+            'date' => $this->faker->dateTimeBetween('-45 days', '-1 days'),
+            'start_time' => $this->faker->dateTimeBetween('-45 days', '-1 days'),
+            'end_time' => $this->faker->dateTimeBetween('-45 days', '-1 days'),
+            'student_id' => rand(1, 50),
+            'teacher_subject_id' => rand(1, 50),
             'created_at' => Carbon::now(),
         ];
     }

@@ -12,6 +12,8 @@ class Teacher extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
 
+    protected $guarded = [];
+
     protected $hidden = ['password'];
 
     public function subjects()

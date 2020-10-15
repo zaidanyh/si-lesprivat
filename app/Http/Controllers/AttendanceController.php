@@ -16,6 +16,17 @@ class AttendanceController extends Controller
     {
         $attendances = Attendance::all();
 
-        return view('admin.attendance.index', ['attendances' => $attendances]);
+        $map = $attendances->map(function ($items) {
+            $hex = ['#2095f2', '#ff532c', '#009b82', '#775949', '#9927b0', '#57be59', '#9b26b2'];
+            $data = (object)[];
+
+            $data->title = $items->schedule->teacher_subject->teacher->name;
+            $data->start = $items->teaching_date . ' ' . $items->attendance_time;
+            $data->color = $hex[array_rand($hex)];
+
+            return $data;
+        });
+
+        return view('admin.attendance.index', ['attendances' => $map]);
     }
 }

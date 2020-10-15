@@ -20,7 +20,8 @@ class CreateAttendancesTable extends Migration
             $table->time('leave_time');
             $table->double('latitude');
             $table->double('longitude');
-            $table->foreignId('schedule_id')->constrained();
+            $table->enum('status', ['Belum Dimulai', 'Tepat Waktu', 'Terlambat'])->default('Belum Dimulai');
+            $table->foreignId('schedule_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

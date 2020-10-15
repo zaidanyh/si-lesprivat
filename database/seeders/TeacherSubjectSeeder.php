@@ -14,6 +14,6 @@ class TeacherSubjectSeeder extends Seeder
      */
     public function run()
     {
-        TeacherSubject::factory()->times(10)->create();
+        TeacherSubject::factory()->times(50)->create();
     }
 }

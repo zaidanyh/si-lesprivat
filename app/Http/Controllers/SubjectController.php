@@ -35,7 +35,8 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Subject::create($request->all());
+        return redirect()->route('subject.index');
     }
 
     /**
@@ -57,7 +58,7 @@ class SubjectController extends Controller
      */
     public function edit(Subject $subject)
     {
-        return view('admin.subject.edit');
+        return view('admin.subject.edit', ['subject' => $subject]);
     }
 
     /**
@@ -69,7 +70,12 @@ class SubjectController extends Controller
      */
     public function update(Request $request, Subject $subject)
     {
-        //
+        Subject::where('id', $subject->id)
+            ->update([
+              'name' => $request->name,
+              'stage' => $request->stage
+            ]);
+        return redirect()->route('subject.index');
     }
 
     /**
@@ -80,6 +86,7 @@ class SubjectController extends Controller
      */
     public function destroy(Subject $subject)
     {
-        //
+        Subject::destroy($subject->id);
+        return redirect()->route('subject.index');
     }
 }

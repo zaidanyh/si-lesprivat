@@ -23,7 +23,7 @@ class TeacherSubjectFactory extends Factory
     public function definition()
     {
         return [
-            'teacher_id' => rand(1, 15),
+            'teacher_id' => rand(1, 50),
             'subject_id' => rand(1, 17),
             'created_at' => Carbon::now(),
         ];

@@ -21,10 +21,10 @@ class CreateStudentsTable extends Migration
             $table->double('latitude');
             $table->double('longitude');
             $table->date('birth_date');
-            $table->enum('gender', ['Laki-laki', 'Perempuan']);	
+            $table->enum('gender', ['Laki-laki', 'Perempuan']);
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('stage');
+            $table->string('class');
             $table->string('photo');
             $table->timestamps();
         });

@@ -16,11 +16,10 @@ class CreateSchedulesTable extends Migration
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->time('time_start');
-            $table->time('time_end');
-            $table->foreignId('student_id')->constrained();
-            $table->foreignId('teacher_subject_id')->constrained('teacher_subject');
-            $table->enum('status', ['Belum Dimulai', 'Tepat Waktu', 'Terlambat'])->default('Belum Dimulai');	
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->foreignId('student_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('teacher_subject_id')->constrained('teacher_subject')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

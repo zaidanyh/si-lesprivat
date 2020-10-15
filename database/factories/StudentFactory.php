@@ -22,10 +22,11 @@ class StudentFactory extends Factory
      */
     public function definition()
     {
-        $stage = ['SD', 'SMP', 'SMA'];
+        $class = ['4 SD', '5 SD', '6 SD', '7 SMP', '8 SMP', '9 SMP', ' 10 SMA', '11 SMA', '12 SMA'];
         $gender = $this->faker->randomElement(['male', 'female']);
         $name = $this->faker->name($gender);
         $domain = ['gmail.com', 'yahoo.com', 'outlook.com', 'icloud.com'];
+        $password = bcrypt('123456');
 
         return [
             'name' => $name,
@@ -36,8 +37,8 @@ class StudentFactory extends Factory
             'birth_date' => $this->faker->dateTimeBetween('-19 years', '-9 years'),
             'gender' => $gender == 'male' ? 'Laki-laki' : 'Perempuan',
             'email' => strtolower(str_replace(" ", ".", $name)) . '@' . $domain[array_rand($domain)],
-            'password' => bcrypt('123456'),
-            'stage' => $stage[array_rand($stage)],
+            'password' => $password,
+            'class' => $class[array_rand($class)],
             'photo' => 'https://res.cloudinary.com/rifaldi/image/upload/v1602240311/default_bawnyo.jpg',
             'created_at' => Carbon::now(),
         ];

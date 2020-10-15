@@ -38,8 +38,8 @@
             serverSide: true,
             ajax: '/json/teacher',
             columns: [{
-                    data: 'id',
-                    name: 'id'
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex'
                 },
                 {
                     data: 'photo',

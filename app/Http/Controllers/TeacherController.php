@@ -35,7 +35,15 @@ class TeacherController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $password = bcrypt($request->password);
+        $request->merge(['password' => $password]);
+
+        $data = $request->except('photo');
+        $photo = cloudinary()->upload($request->file('photo')->getRealPath())->getSecurePath();
+        $data['photo'] = $photo;
+
+        Teacher::create($data);
+        return redirect()->route('teacher.index');
     }
 
     /**
@@ -57,7 +65,7 @@ class TeacherController extends Controller
      */
     public function edit(Teacher $teacher)
     {
-        return view('admin.teacher.edit');
+        return view('admin.teacher.edit', ['teacher' => $teacher]);
     }
 
     /**
@@ -80,6 +88,7 @@ class TeacherController extends Controller
      */
     public function destroy(Teacher $teacher)
     {
-        //
+        Teacher::destroy($teacher->id);
+        return redirect()->route('teacher.index');
     }
 }

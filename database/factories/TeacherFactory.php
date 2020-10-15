@@ -31,9 +31,9 @@ class TeacherFactory extends Factory
             'Pendidikan Ekonomi',
             'Pendidikan Geografi',
             'Pendidikan Sosiologi',
-            'Pendidikan Ilmu Pengetahuan Alam', 
-            'Pendidikan Ilmu Pengetahuan Sosial', 
-            'Pendidikan B. Indonesia', 
+            'Pendidikan Ilmu Pengetahuan Alam',
+            'Pendidikan Ilmu Pengetahuan Sosial',
+            'Pendidikan B. Indonesia',
             'Pendidikan B. Inggris',
             'Pendidikan Guru Sekolah Dasar'
         ];
@@ -46,6 +46,7 @@ class TeacherFactory extends Factory
         $gender = $this->faker->randomElement(['male', 'female']);
         $name = $this->faker->name($gender);
         $domain = ['gmail.com', 'yahoo.com', 'outlook.com', 'icloud.com'];
+        $password = bcrypt('123456');
 
         return [
             'name' => $name,
@@ -56,7 +57,7 @@ class TeacherFactory extends Factory
             'birth_date' => $this->faker->dateTimeBetween('-29 years', '-19 years'),
             'gender' => $gender == 'male' ? 'Laki-laki' : 'Perempuan',
             'email' => strtolower(str_replace(" ", ".", $name)) . '@' . $domain[array_rand($domain)],
-            'password' => bcrypt('123456'),
+            'password' => $password,
             'education' => 'S1 ' . $major[array_rand($major)] . ' ' . $universities[array_rand($universities)],
             'gpa' => rand(340, 390) / 100,
             'photo' => 'https://res.cloudinary.com/rifaldi/image/upload/v1602240311/default_bawnyo.jpg',

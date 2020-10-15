@@ -9,6 +9,8 @@ class Subject extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function teachers()
     {
         return $this->belongsToMany(

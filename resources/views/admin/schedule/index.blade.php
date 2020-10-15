@@ -61,21 +61,26 @@
 
 @push('scripts')
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"
-    integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
 
 <script>
     $(document).ready(function () {
         $('#calendar').fullCalendar({
-            eventColor: '#0984e3',
-            eventTextColor: '#dfe6e9',
+            themeSystem: 'bootstrap4',
+            header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,listMonth'
+            },
+            eventLimit: true,
             events: [
                 @foreach($schedules as $schedule) {
-                    title: '{{ $schedule->student->name }}',
-                    start: '{{ $schedule->date . ' ' . $schedule->time_start }}',
+                    title: '{{ $schedule->title }}',
+                    start: '{{ $schedule->start }}',
+                    color: '{{ $schedule->color }}',
                 },
                 @endforeach
             ],
@@ -86,7 +91,6 @@
                 $('#start_time').val(moment(calEvent.start).format('YYYY-MM-DD HH:mm:ss'));
                 $('#finish_time').val(moment(calEvent.end).format('YYYY-MM-DD HH:mm:ss'));
                 $('#editModal').modal();
-                console.log('clicked')
             }
         });
     });

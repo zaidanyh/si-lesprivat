@@ -17,7 +17,7 @@
                             <th>Nama</th>
                             <th>Telepon</th>
                             <th>Jenis Kelamin</th>
-                            <th>Jenjang</th>
+                            <th>Kelas</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -38,8 +38,8 @@
             serverSide: true,
             ajax: '/json/student',
             columns: [{
-                    data: 'id',
-                    name: 'id'
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex'
                 },
                 {
                     data: 'photo',
@@ -58,8 +58,8 @@
                     name: 'gender'
                 },
                 {
-                    data: 'stage',
-                    name: 'stage'
+                    data: 'class',
+                    name: 'class'
                 },
                 {
                     data: 'action',

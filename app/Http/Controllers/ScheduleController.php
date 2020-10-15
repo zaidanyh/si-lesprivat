@@ -16,7 +16,18 @@ class ScheduleController extends Controller
     {
         $schedules = Schedule::all();
 
-        return view('admin.schedule.index', ['schedules' => $schedules]);
+        $map = $schedules->map(function ($items) {
+            $hex = ['#2095f2', '#ff532c', '#009b82', '#775949', '#9927b0', '#57be59', '#9b26b2'];
+            $data = (object)[];
+
+            $data->title = $items->student->name;
+            $data->start = $items->date . ' ' . $items->start_time;
+            $data->color = $hex[array_rand($hex)];
+
+            return $data;
+        });
+
+        return view('admin.schedule.index', ['schedules' => $map]);
     }
 
     /**

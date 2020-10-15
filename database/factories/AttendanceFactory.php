@@ -25,12 +25,13 @@ class AttendanceFactory extends Factory
         static $schedule = 1;
 
         return [
-            'teaching_date' => $this->faker->dateTimeBetween('-7 days', '-1 days'),
-            'attendance_time' => $this->faker->dateTimeBetween('-7 days', '-1 days'),
-            'leave_time' => $this->faker->dateTimeBetween('-7 days', '-1 days'),
+            'teaching_date' => $this->faker->dateTimeBetween('-45 days', '-1 days'),
+            'attendance_time' => $this->faker->dateTimeBetween('-45 days', '-1 days'),
+            'leave_time' => $this->faker->dateTimeBetween('-45 days', '-1 days'),
             'latitude' => $this->faker->latitude(-8.1, -8.2),
             'longitude' => $this->faker->longitude(-112.1, 112.2),
             'schedule_id' => $schedule++,
+            'status' => $this->faker->randomElement(['Tepat Waktu', 'Terlambat']),
             'created_at' => Carbon::now(),
         ];
     }

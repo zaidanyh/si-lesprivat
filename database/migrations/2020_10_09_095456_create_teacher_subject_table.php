@@ -17,7 +17,6 @@ class CreateTeacherSubjectTable extends Migration
             $table->id();
             $table->foreignId('teacher_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('subject_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 

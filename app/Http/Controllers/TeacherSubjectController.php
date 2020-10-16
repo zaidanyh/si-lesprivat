@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Subject;
+use App\Models\Teacher;
 use App\Models\TeacherSubject;
 use Illuminate\Http\Request;
 
@@ -55,9 +57,10 @@ class TeacherSubjectController extends Controller
      * @param  \App\Models\TeacherSubject  $teacherSubject
      * @return \Illuminate\Http\Response
      */
-    public function edit(TeacherSubject $teacherSubject)
+    public function edit(Teacher $teacher)
     {
-        //
+        $subjects = Subject::all();
+        return view('admin.teacher_subject.edit', ['teacher' => $teacher, 'subjects' => $subjects]);
     }
 
     /**
@@ -67,9 +70,11 @@ class TeacherSubjectController extends Controller
      * @param  \App\Models\TeacherSubject  $teacherSubject
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TeacherSubject $teacherSubject)
+    public function update(Request $request, Teacher $teacher)
     {
-        //
+        $teacher->subjects()->sync($request->subject_ids);
+
+        return redirect()->route('teacher.show', $teacher);
     }
 
     /**

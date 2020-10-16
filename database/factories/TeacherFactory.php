@@ -60,7 +60,7 @@ class TeacherFactory extends Factory
             'password' => $password,
             'education' => 'S1 ' . $major[array_rand($major)] . ' ' . $universities[array_rand($universities)],
             'gpa' => rand(340, 390) / 100,
-            'photo' => 'https://res.cloudinary.com/rifaldi/image/upload/v1602240311/default_bawnyo.jpg',
+            'photo' => $gender == 'male' ? 'https://res.cloudinary.com/rifaldi/image/upload/v1602739672/avatar_2_u6xzcv.png' : 'https://res.cloudinary.com/rifaldi/image/upload/v1602739498/avatar_1_c4g34m.png',
             'created_at' => Carbon::now(),
         ];
     }

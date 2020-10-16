@@ -35,7 +35,15 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $password = bcrypt($request->password);
+        $request->merge(['password' => $password]);
+
+        $data = $request->except('photo');
+        $photo = cloudinary()->upload($request->file('photo')->getRealPath())->getSecurePath();
+        $data['photo'] = $photo;
+
+        Student::create($data);
+        return redirect()->route('student.index');
     }
 
     /**
@@ -46,7 +54,7 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        //
+        return view('admin.student.show', ['student' => $student]);
     }
 
     /**
@@ -57,7 +65,7 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        return view('admin.student.edit');
+        return view('admin.student.edit', ['student' => $student]);
     }
 
     /**
@@ -69,7 +77,20 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        //
+        Student::where('id', $student->id)
+            ->update([
+                'name' => $request->name,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'birth_date' => $request->birth_date,
+                'email' => $request->email,
+                'password' => $request->password != '' ? bcrypt($request->password) : $student->password,
+                'class' => $request->class,
+                'photo' => $request->hasFile('photo') ? cloudinary()->upload($request->file('photo')->getRealPath())->getSecurePath() : $student->photo,
+            ]);
+        return redirect()->route('student.index');
     }
 
     /**

@@ -22,35 +22,40 @@ class AdminSeeder extends Seeder
             'email' => 'nisauzahr@gmail.com',
             'password' => Hash::make('081335743751'),
             'remember_token' => Str::random(10),
-            'created_at' => Carbon::now()
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
         DB::table('admins')->insert([
             'name' => 'Noviar Graha Andika',
             'email' => 'noviargr@gmail.com',
             'password' => Hash::make('087874439827'),
             'remember_token' => Str::random(10),
-            'created_at' => Carbon::now()
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
         DB::table('admins')->insert([
             'name' => 'Muhamad Zaidan Yahya',
             'email' => 'mzaidanyh26@gmail.com',
             'password' => Hash::make('085745966039'),
             'remember_token' => Str::random(10),
-            'created_at' => Carbon::now()
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
         DB::table('admins')->insert([
             'name' => 'Rifaldi Dwi Distika W',
             'email' => 'dwi.rifaldi2588@gmail.com',
             'password' => Hash::make('085735725135'),
             'remember_token' => Str::random(10),
-            'created_at' => Carbon::now()
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
         DB::table('admins')->insert([
             'name' => 'Shania Bunga Amalia',
             'email' => 'nia455@gmail.com',
             'password' => Hash::make('085536724154'),
             'remember_token' => Str::random(10),
-            'created_at' => Carbon::now()
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
     }
 }

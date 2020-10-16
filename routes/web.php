@@ -7,6 +7,7 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\TeacherSubjectController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -34,9 +35,15 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         'teacher' => TeacherController::class,
         'student' => StudentController::class,
         'subject' => SubjectController::class,
-        'schedule' => ScheduleController::class,
     ]);
+    
+    Route::get('/teacher_subject/{teacher}/edit', [TeacherSubjectController::class, 'edit'])->name('teacher_subject.edit');
+    Route::put('/teacher_subject/{teacher}', [TeacherSubjectController::class, 'update'])->name('teacher_subject.update');
+
+    Route::resource('schedule', ScheduleController::class)->only(['index', 'store']);
     Route::resource('attendance', AttendanceController::class)->only(['index']);
+
+    Route::get('/teacher/attendance/{teacher}', [AttendanceController::class, 'print'])->name('teacher.attendance.print');
 });
 
 Route::prefix('json')->middleware('auth')->group(function () {

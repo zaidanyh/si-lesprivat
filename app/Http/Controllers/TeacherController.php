@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Teacher;
+use App\Models\TeacherSubject;
 use Illuminate\Http\Request;
 
 class TeacherController extends Controller
@@ -54,7 +55,7 @@ class TeacherController extends Controller
      */
     public function show(Teacher $teacher)
     {
-        //
+        return view('admin.teacher.show', ['teacher' => $teacher]);
     }
 
     /**
@@ -77,7 +78,21 @@ class TeacherController extends Controller
      */
     public function update(Request $request, Teacher $teacher)
     {
-        //
+        Teacher::where('id', $teacher->id)
+            ->update([
+                'name' => $request->name,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'birth_date' => $request->birth_date,
+                'email' => $request->email,
+                'password' => $request->password != '' ? bcrypt($request->password) : $teacher->password,
+                'education' => $request->education,
+                'gpa' => $request->gpa,
+                'photo' => $request->hasFile('photo') ? cloudinary()->upload($request->file('photo')->getRealPath())->getSecurePath() : $teacher->photo,
+            ]);
+        return redirect()->route('teacher.index');
     }
 
     /**

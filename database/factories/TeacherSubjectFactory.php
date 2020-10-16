@@ -25,7 +25,6 @@ class TeacherSubjectFactory extends Factory
         return [
             'teacher_id' => rand(1, 50),
             'subject_id' => rand(1, 17),
-            'created_at' => Carbon::now(),
         ];
     }
 }

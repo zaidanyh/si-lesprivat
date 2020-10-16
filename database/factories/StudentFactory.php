@@ -39,7 +39,7 @@ class StudentFactory extends Factory
             'email' => strtolower(str_replace(" ", ".", $name)) . '@' . $domain[array_rand($domain)],
             'password' => $password,
             'class' => $class[array_rand($class)],
-            'photo' => 'https://res.cloudinary.com/rifaldi/image/upload/v1602240311/default_bawnyo.jpg',
+            'photo' => $gender == 'male' ? 'https://res.cloudinary.com/rifaldi/image/upload/v1602739537/avatar_tgga2g.png' : 'https://res.cloudinary.com/rifaldi/image/upload/v1602739677/avatar_3_fgqub6.png',
             'created_at' => Carbon::now(),
         ];
     }

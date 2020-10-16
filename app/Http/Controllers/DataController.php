@@ -36,7 +36,7 @@ class DataController extends Controller
                 return '<img src="' . $student->photo . '" border="0" width="90" class="img-rounded" align="center" />';
             })
             ->addColumn('action', function ($student) {
-                return '<a href="/admin/teacher/' . $student->id . '" class="btn btn-sm btn-info btn-circle"><i class="fas fa-info-circle"></i></a>
+                return '<a href="/admin/student/' . $student->id . '" class="btn btn-sm btn-info btn-circle"><i class="fas fa-info-circle"></i></a>
                 <a href="/admin/student/' . $student->id . '/edit" class="btn btn-sm btn-warning btn-circle"><i class="fas fa-check"></i></a>
                 <form action="/admin/student/' . $student->id . '" method="POST" class="d-inline">
                         <input type="hidden" name="_method" value="delete" />

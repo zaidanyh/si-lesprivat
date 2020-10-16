@@ -9,6 +9,10 @@ class TeacherSubject extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
+    public $timestamps = false;
+
     /**
      * The table associated with the model.
      *

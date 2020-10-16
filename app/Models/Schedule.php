@@ -9,6 +9,8 @@ class Schedule extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function student()
     {
         return $this->belongsTo('App\Models\Student');

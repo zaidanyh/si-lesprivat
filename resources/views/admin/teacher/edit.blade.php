@@ -35,6 +35,7 @@
 
     <form action="{{ route('teacher.update', $teacher) }}" method="POST" enctype="multipart/form-data">
         @csrf
+        @method('PUT')
         <div class="form-group row">
             <label for="name" class="col-sm-2 col-form-label">Nama Guru</label>
             <div class="col-sm-10">
@@ -63,11 +64,9 @@
                         accessToken: 'pk.eyJ1IjoiZHdpLXJpZmFsZGk0MTI5OSIsImEiOiJja2JsdDRnd2MxYzh4Mnhsc25ndXZwcjQyIn0.vYl2V9F_D-qdVwc0IMg6zA'
                     }).addTo(mymap);
 
-                    L.marker(['{{ $teacher->latitude }}', '{{ $teacher->longitude }}']).addTo(mymap);
-
                     mymap.on('click', onMapClick);
 
-                    let marker = null;
+                    let marker = L.marker(['{{ $teacher->latitude }}', '{{ $teacher->longitude }}']).addTo(mymap);;
 
                     function onMapClick(e) {
                         if (marker != null) {
@@ -90,14 +89,15 @@
         <div class="form-group row">
             <label for="longitude" class="col-sm-2 col-form-label">Longitude</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="longitude" name="longitude" value="{{ $teacher->longitude }}">
+                <input type="text" class="form-control" id="longitude" name="longitude"
+                    value="{{ $teacher->longitude }}">
             </div>
         </div>
         <div class="form-group row">
             <label for="birth_date" class="col-sm-2 col-form-label">Tanggal Lahir</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control datetimepicker-input" id="birth_date" name="birth_date"
-                    data-toggle="datetimepicker" data-target="#birth_date"/>
+                    data-toggle="datetimepicker" data-target="#birth_date" />
                 <script type="text/javascript">
                     $(function () {
                         $('#birth_date').datetimepicker({
@@ -133,7 +133,8 @@
         <div class="form-group row">
             <label for="education" class="col-sm-2 col-form-label">Pendidikan</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="education" name="education" value="{{ $teacher->education }}">
+                <input type="text" class="form-control" id="education" name="education"
+                    value="{{ $teacher->education }}">
             </div>
         </div>
         <div class="form-group row">

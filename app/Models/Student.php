@@ -12,7 +12,7 @@ class Student extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
 
-    protected $hidden = ['password'];
+    protected $hidden = ['password', 'created_at', 'updated_at'];
 
     public function schedules()
     {

@@ -14,7 +14,7 @@ class Teacher extends Authenticatable
 
     protected $guarded = [];
 
-    protected $hidden = ['password'];
+    protected $hidden = ['password', 'created_at', 'updated_at'];
 
     public function subjects()
     {

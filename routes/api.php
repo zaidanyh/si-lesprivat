@@ -33,15 +33,17 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::prefix('teacher/{teacher}')->group(function () {
         Route::get('/', [TeacherController::class, 'show']);
         Route::put('/', [TeacherController::class, 'update']);
-        Route::get('/schedule', [TeacherController::class, 'schedule']);
-        Route::get('/schedule/{schedule}/detail', [TeacherController::class, 'schedule_detail']);
+        Route::get('/schedules', [TeacherController::class, 'schedules']);
+        Route::get('/schedule/{schedule}/detail', [TeacherController::class, 'schedule']);
         Route::post('/schedule/{schedule}/attendance', [TeacherController::class, 'schedule_attendance']);
     });
     
     Route::prefix('student/{student}')->group(function () {
         Route::get('/', [StudentController::class, 'show']);
         Route::put('/', [StudentController::class, 'update']);
-        Route::get('/schedule', [StudentController::class, 'schedule']);
-        Route::get('/schedule/{schedule}/detail', [StudentController::class, 'schedule_detail']);
+        Route::get('/search_teacher', [StudentController::class, 'search']);
+        Route::post('/create_schedule', [StudentController::class, 'appointment']);
+        Route::get('/schedules', [StudentController::class, 'schedules']);
+        Route::get('/schedule/{schedule}/detail', [StudentController::class, 'schedule']);
     });
 });

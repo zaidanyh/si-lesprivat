@@ -36,8 +36,7 @@ class TeacherController extends Controller
      */
     public function store(Request $request)
     {
-        $password = bcrypt($request->password);
-        $request->merge(['password' => $password]);
+        $request->merge(['password' => bcrypt($request->password)]);
 
         $data = $request->except('photo');
         $photo = cloudinary()->upload($request->file('photo')->getRealPath())->getSecurePath();

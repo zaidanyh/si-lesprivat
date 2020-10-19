@@ -1,5 +1,9 @@
 @extends('layouts.main')
 
+@push('head')
+<link href="{{ asset('admin/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+@endpush
+
 @section('content')
 <div class="container-fluid">
     <div class="card shadow mb-4">
@@ -7,7 +11,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Data Guru</h6>
         </div>
         <div class="card-body">
-        <a href="{{ route('teacher.create') }}" class="btn btn-primary mb-3">Tambah</a>
+            <a href="{{ route('teacher.create') }}" class="btn btn-primary mb-3">Tambah</a>
             <div class="table-responsive">
                 <table class="table table-bordered teacher-table" id="teacher-table" width="100%" cellspacing="0">
                     <thead>

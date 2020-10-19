@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Schedule;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -10,6 +11,26 @@ use Illuminate\Support\Facades\Validator;
 
 class StudentController extends Controller
 {
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|min:5|max:255',
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:6',
+        ]);
+
+        if ($validator->fails())
+        {
+            return response(['errors' => $validator->errors()->all()], 422);
+        }
+
+        $request->merge(['password' => bcrypt($request->password)]);
+        
+        Student::create($request->all());
+
+        return response(['message' =>'Register student success'], 201);
+    }
+
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -19,45 +40,38 @@ class StudentController extends Controller
 
         if ($validator->fails())
         {
-            return response(['errors'=>$validator->errors()->all()], 422);
+            return response(['errors' => $validator->errors()->all()], 422);
         }
 
         $student = Student::where('email', $request->email)->first();
 
         if ($student) {
             if (Hash::check($request->password, $student->password)) {
-                $token = $student->createToken('studentTokenApi')->plainTextToken;
-                $response = ['message' => 'Login Success', 'token' => $token];
-                return response($response, 200);
+                $token = $student->createToken('studentTokenApi', ['profile:read', 'profile:update', 'schedule:read'])->plainTextToken;
+                return response(['message' => 'Login Success', 'token' => $token], 200);
             } else {
-                $response = ['message' => 'Password mismatch'];
-                return response($response, 422);
+                return response(['message' => 'Password mismatch'], 422);
             }
         } else {
-            $response = ['message' =>'User does not exist'];
-            return response($response, 422);
+            return response(['message' =>'User does not exist'], 422);
         }
     }
-    
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function logout(Student $student)
     {
-        //
+        $student->tokens()->delete();
+        
+        return response(['message' =>'Logout Student Success'], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function schedule(Student $student)
     {
-        //
+        return response($student->schedules, 200);
+    }
+    
+    public function schedule_detail(Student $student, Schedule $schedule)
+    {
+        return response($schedule, 200);
     }
 
     /**
@@ -66,9 +80,9 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Student $student)
     {
-        //
+        return response($student, 200);
     }
 
     /**
@@ -78,19 +92,21 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Student $student)
     {
-        //
-    }
+        Student::where('id', $student->id)
+        ->update([
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
+            'birth_date' => $request->birth_date,
+            'password' => $request->password != '' ? bcrypt($request->password) : $student->password,
+            'class' => $request->class,
+            'photo' => $request->hasFile('photo') ? cloudinary()->upload($request->file('photo')->getRealPath())->getSecurePath() : $student->photo,
+        ]);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return response(['message' =>'Update Student Profile Success'], 200);
     }
 }

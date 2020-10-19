@@ -15,7 +15,7 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        $attendances = Attendance::all();
+        $attendances = Attendance::with('schedule')->get();
 
         $map = $attendances->map(function ($items) {
             $hex = ['#2095f2', '#ff532c', '#009b82', '#775949', '#9927b0', '#57be59', '#9b26b2'];

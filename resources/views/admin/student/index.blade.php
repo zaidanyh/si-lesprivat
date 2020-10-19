@@ -1,5 +1,9 @@
 @extends('layouts.main')
 
+@push('head')
+<link href="{{ asset('admin/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+@endpush
+
 @section('content')
 <div class="container-fluid">
     <div class="card shadow mb-4">

@@ -16,17 +16,17 @@ class CreateTeachersTable extends Migration
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('phone');
-            $table->string('address');
-            $table->double('latitude');
-            $table->double('longitude');
-            $table->date('birth_date');
-            $table->enum('gender', ['Laki-laki', 'Perempuan']);	
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+            $table->double('latitude')->nullable();
+            $table->double('longitude')->nullable();
+            $table->date('birth_date')->nullable();
+            $table->enum('gender', ['Laki-laki', 'Perempuan'])->nullable();	
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('education');
-            $table->string('gpa', 4);
-            $table->string('photo');
+            $table->string('education')->nullable();
+            $table->string('gpa', 4)->nullable();
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }

@@ -16,16 +16,16 @@ class CreateStudentsTable extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('phone');
-            $table->string('address');
-            $table->double('latitude');
-            $table->double('longitude');
-            $table->date('birth_date');
-            $table->enum('gender', ['Laki-laki', 'Perempuan']);
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+            $table->double('latitude')->nullable();
+            $table->double('longitude')->nullable();
+            $table->date('birth_date')->nullable();
+            $table->enum('gender', ['Laki-laki', 'Perempuan'])->nullable();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('class');
-            $table->string('photo');
+            $table->string('class')->nullable();
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }

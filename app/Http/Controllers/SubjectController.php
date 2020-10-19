@@ -40,17 +40,6 @@ class SubjectController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Subject  $subject
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Subject $subject)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Subject  $subject

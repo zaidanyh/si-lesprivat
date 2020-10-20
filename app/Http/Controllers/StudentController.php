@@ -36,9 +36,12 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $request->merge(['password' => bcrypt($request->password)]);
-        $request->photo = cloudinary()->upload($request->file('photo')->getRealPath())->getSecurePath();;
+        $request->merge(['password' => $password]);
+        $data = $request->except('photo');
+        $photo = cloudinary()->upload($request->file('photo')->getRealPath())->getSecurePath();
+        $data['photo'] = $photo;
 
-        Student::create($request->all());
+        Student::create($data);
         return redirect()->route('student.index')->with(['success' => 'Data Berhasil Ditambahkan']);
     }
 
@@ -79,7 +82,7 @@ class StudentController extends Controller
         $photo = $request->hasFile('photo') ? cloudinary()->upload($request->file('photo')->getRealPath())->getSecurePath() : $student->photo;
         $data['photo'] = $photo;
 
-        $student->update($request->all());
+        $student->update($data);
 
         return redirect()->route('student.index')->with(['success' => 'Data Berhasil Diubah']);
     }

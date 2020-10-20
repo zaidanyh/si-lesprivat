@@ -20,7 +20,7 @@
 
 <style>
     #mapid {
-        height: 300px;
+        height: 600px;
     }
 
 </style>
@@ -30,32 +30,30 @@
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Detail Data Siswa</h1>
+        <h1 class="h3 mb-0 text-gray-800">Detail Absensi</h1>
     </div>
 
     <div class="row">
         <div class="col-sm-6">
             <div class="card mt-3 mt-md-0">
                 <div class="row no-gutters">
-                    <div class="col-md-4 p-2">
-                        <img src="{{ $student->photo }}" class="card-img" alt="...">
-                    </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h5 class="card-title">{{ $student->name }}</h5>
-                            <p class="card-text">Email : {{ $student->email }}</p>
-                            <p class="card-text">Telepon : {{ $student->phone }}</p>
+                            <h5 class="card-title">{{ $attendance->schedule->teacher_subject->teacher->name }}</h5>
+                            <p class="card-text">Tanggal Mengajar : {{ $attendance->teaching_date }}</p>
+                            <p class="card-text">Waktu Absensi : {{ $attendance->attendance_time }}</p>
+                            <p class="card-text">Waktu Keluar : {{ $attendance->leave_time }}</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-sm-6">
-            <div class="card">
+            <div class="cards mt-3 mt-md-0">
                 <div class="card-body">
-                    <p class="card-text">Alamat : {{ $student->address }}</p>
-                    <p class="card-text">Tanggal Lahir: {{ $student->birth_date }}</p>
-                    <p class="card-text">Kelas: {{ $student->class }}</p>
+                    <p class="card-text">Status : {{ $attendance->status }}</p>
+                    <p class="card-text">Nama Siswa : {{ $attendance->schedule->student->name }}</p>
+                    <p class="card-text">Mata Pelajaran: {{ $attendance->schedule->teacher_subject->subject->name }}</p>
                 </div>
             </div>
         </div>
@@ -67,7 +65,7 @@
         <div class="card-body">
             <div id="mapid"></div>
             <script>
-                const mymap = L.map('mapid').setView(['{{ $student->latitude }}', '{{ $student->longitude }}'], 17);
+                const mymap = L.map('mapid').setView(['{{ $attendance->latitude }}', '{{ $attendance->longitude }}'], 13);
                 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
                     maxZoom: 18,
@@ -77,7 +75,10 @@
                     accessToken: 'pk.eyJ1IjoiZHdpLXJpZmFsZGk0MTI5OSIsImEiOiJja2JsdDRnd2MxYzh4Mnhsc25ndXZwcjQyIn0.vYl2V9F_D-qdVwc0IMg6zA'
                 }).addTo(mymap);
 
-                L.marker(['{{ $student->latitude }}', '{{ $student->longitude }}']).addTo(mymap);
+                var teacher = L.marker(['{{ $attendance->latitude }}', '{{ $attendance->longitude }}']).addTo(mymap);
+                teacher.bindPopup("<b>Lokasi Absen Guru</b>").openPopup();
+                var student = L.marker(['{{ $attendance->schedule->student->latitude }}', '{{ $attendance->schedule->student->longitude }}']).addTo(mymap);
+                student.bindPopup("<b>Lokasi Siswa</b>");
 
             </script>
         </div>

@@ -54,7 +54,7 @@
             </div>
         </div>
         <div class="col-sm-6">
-            <div class="card">
+            <div class="card mt-3 mt-md-0">
                 <div class="card-body">
                     <p class="card-text">Alamat : {{ $teacher->address }}</p>
                     <p class="card-text">Tanggal Lahir: {{ $teacher->birth_date }}</p>
@@ -71,7 +71,7 @@
                     <div class="col-md">
                         <div class="card-body">
                             <h5 class="card-title">Mata Pelajaran</h5>
-                            <ul class="list-group list-group-horizontal">
+                            <ul class="list-group list-group-horizontal-sm">
                                 @foreach ($teacher->subjects as $subject)
                                 <li class="list-group-item">
                                     {{ $subject->name . ' ' . $subject->stage }}</li>

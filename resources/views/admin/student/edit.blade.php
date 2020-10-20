@@ -80,19 +80,8 @@
                 </script>
             </div>
         </div>
-        <div class="form-group row">
-            <label for="latitude" class="col-sm-2 col-form-label">Latitude</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="latitude" name="latitude" value="{{ $student->latitude }}">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="longitude" class="col-sm-2 col-form-label">Longitude</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="longitude" name="longitude"
-                    value="{{ $student->longitude }}">
-            </div>
-        </div>
+        <input type="hidden" class="form-control" id="latitude" name="latitude" value="{{ $student->latitude }}">
+        <input type="hidden" class="form-control" id="longitude" name="longitude" value="{{ $student->longitude }}">
         <div class="form-group row">
             <label for="birth_date" class="col-sm-2 col-form-label">Tanggal Lahir</label>
             <div class="col-sm-10">
@@ -138,7 +127,7 @@
         <div class="form-group row">
             <label for="education" class="col-sm-2 col-form-label">Kelas</label>
             <div class="col-sm-10">
-                <select class="form-control" id="gender">
+                <select class="form-control" id="class" name="class">
                     <option value="{{ $student->class }}">{{ $student->class }}</option>
                     <option value="4 SD">4 SD</option>
                     <option value="5 SD">5 SD</option>

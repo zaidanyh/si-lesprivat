@@ -35,15 +35,11 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        $password = bcrypt($request->password);
-        $request->merge(['password' => $password]);
+        $request->merge(['password' => bcrypt($request->password)]);
+        $request->photo = cloudinary()->upload($request->file('photo')->getRealPath())->getSecurePath();;
 
-        $data = $request->except('photo');
-        $photo = cloudinary()->upload($request->file('photo')->getRealPath())->getSecurePath();
-        $data['photo'] = $photo;
-
-        Student::create($data);
-        return redirect()->route('student.index');
+        Student::create($request->all());
+        return redirect()->route('student.index')->with(['success' => 'Data Berhasil Ditambahkan']);
     }
 
     /**
@@ -77,20 +73,15 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        Student::where('id', $student->id)
-            ->update([
-                'name' => $request->name,
-                'phone' => $request->phone,
-                'address' => $request->address,
-                'latitude' => $request->latitude,
-                'longitude' => $request->longitude,
-                'birth_date' => $request->birth_date,
-                'email' => $request->email,
-                'password' => $request->password != '' ? bcrypt($request->password) : $student->password,
-                'class' => $request->class,
-                'photo' => $request->hasFile('photo') ? cloudinary()->upload($request->file('photo')->getRealPath())->getSecurePath() : $student->photo,
-            ]);
-        return redirect()->route('student.index');
+        $password = is_null($request->password) ? $student->password : bcrypt($request->password);
+        $request->merge(['password' => $password]);
+        $data = $request->except('photo');
+        $photo = $request->hasFile('photo') ? cloudinary()->upload($request->file('photo')->getRealPath())->getSecurePath() : $student->photo;
+        $data['photo'] = $photo;
+
+        $student->update($request->all());
+
+        return redirect()->route('student.index')->with(['success' => 'Data Berhasil Diubah']);
     }
 
     /**
@@ -102,6 +93,6 @@ class StudentController extends Controller
     public function destroy(Student $student)
     {
         Student::destroy($student->id);
-        return redirect()->route('student.index');
+        return redirect()->route('student.index')->with(['success' => 'Data Berhasil Dihapus']);
     }
 }

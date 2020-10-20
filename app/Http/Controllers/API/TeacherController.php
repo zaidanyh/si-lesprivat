@@ -20,16 +20,15 @@ class TeacherController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return response(['errors' => $validator->errors()->all()], 422);
         }
 
         $request->merge(['password' => bcrypt($request->password)]);
-        
+
         Teacher::create($request->all());
 
-        $response = ['message' =>'registered'];
+        $response = ['message' => 'registered'];
         return response($response, 201);
     }
 
@@ -41,8 +40,7 @@ class TeacherController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return response(['message' => $validator->errors()->all()], 422);
         }
 
@@ -58,7 +56,7 @@ class TeacherController extends Controller
                 return response($response, 422);
             }
         } else {
-            $response = ['message' =>'failed'];
+            $response = ['message' => 'failed'];
             return response($response, 422);
         }
     }
@@ -66,8 +64,8 @@ class TeacherController extends Controller
     public function logout(Teacher $teacher)
     {
         $teacher->tokens()->delete();
-        
-        return response(['message' =>'success'], 200);
+
+        return response(['message' => 'success'], 200);
     }
 
     public function schedules(Teacher $teacher)
@@ -90,27 +88,25 @@ class TeacherController extends Controller
             'latitude' => 'required',
             'longitude' => 'required',
         ]);
-        
-        if ($validator->fails())
-        {
+
+        if ($validator->fails()) {
             return response(['message' => $validator->errors()->all()], 422);
         }
 
-        $teaching_date = $request->teaching_date;
-        $attendance_time = $request->attendance_time;
-        $leave_time = $request->leave_time;
-        $schedule_date = $schedule->date;
-        $schedule_start_time = $schedule->start_time;
-        $schedule_end_time = $schedule->end_time;
-
-        $status = $this->check_attendance($teaching_date, $attendance_time, $leave_time,
-                                            $schedule_date, $schedule_start_time, $schedule_end_time);
+        $status = $this->check_attendance(
+            $request->teaching_date,
+            $request->attendance_time,
+            $request->leave_time,
+            $schedule->date,
+            $schedule->start_time,
+            $schedule->end_time
+        );
 
         $request->merge(['schedule_id' => $schedule->id, 'status' => $status]);
 
         Attendance::create($request->all());
 
-        return response(['message' =>'created'], 201);
+        return response(['message' => 'created'], 201);
     }
 
     private function check_attendance($teaching_date, $attendance_time, $leave_time, $schedule_date, $schedule_start_time, $schedule_end_time)
@@ -151,26 +147,19 @@ class TeacherController extends Controller
             'education' => 'required|string|min:10|max:255',
             'gpa' => 'required|string|min:4|max:4',
         ]);
-        
-        if ($validator->fails())
-        {
+
+        if ($validator->fails()) {
             return response(['message' => $validator->errors()->all()], 422);
         }
 
-        Teacher::where('id', $teacher->id)
-        ->update([
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'latitude' => $request->latitude,
-            'longitude' => $request->longitude,
-            'birth_date' => $request->birth_date,
-            'password' => $request->password != '' ? bcrypt($request->password) : $teacher->password,
-            'education' => $request->education,
-            'gpa' => $request->gpa,
-            'photo' => $request->hasFile('photo') ? cloudinary()->upload($request->file('photo')->getRealPath())->getSecurePath() : $teacher->photo,
-        ]);
+        $password = is_null($request->password) ? $teacher->password : bcrypt($request->password);
+        $request->merge(['password' => $password]);
+        $data = $request->except('photo');
+        $photo = $request->hasFile('photo') ? cloudinary()->upload($request->file('photo')->getRealPath())->getSecurePath() : $teacher->photo;
+        $data['photo'] = $photo;
 
-        return response(['message' =>'updated'], 200);
+        $teacher->update($data);
+
+        return response(['message' => 'updated'], 200);
     }
 }

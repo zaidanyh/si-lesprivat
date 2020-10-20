@@ -79,23 +79,13 @@
                 </script>
             </div>
         </div>
-        <div class="form-group row">
-            <label for="latitude" class="col-sm-2 col-form-label">Latitude</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="latitude" name="latitude">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="longitude" class="col-sm-2 col-form-label">Longitude</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="longitude" name="longitude">
-            </div>
-        </div>
+        <input type="hidden" class="form-control" id="latitude" name="latitude">
+        <input type="hidden" class="form-control" id="longitude" name="longitude">
         <div class="form-group row">
             <label for="birth_date" class="col-sm-2 col-form-label">Tanggal Lahir</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control datetimepicker-input" id="birth_date" name="birth_date"
-                    data-toggle="datetimepicker" data-target="#birth_date"/>
+                    data-toggle="datetimepicker" data-target="#birth_date" />
                 <script type="text/javascript">
                     $(function () {
                         $('#birth_date').datetimepicker({
@@ -109,7 +99,7 @@
         <div class="form-group row">
             <label for="gender" class="col-sm-2 col-form-label">Jenis Kelamin</label>
             <div class="col-sm-10">
-                <select class="form-control" id="gender">
+                <select class="form-control" id="gender" name="gender">
                     <option value="Laki-laki">Laki-laki</option>
                     <option value="Perempuan">Perempuan</option>
                 </select>

@@ -17,20 +17,31 @@ class AttendanceController extends Controller
     {
         $attendances = Attendance::with('schedule')->get();
 
-        $map = $attendances->map(function ($items) {
-            $hex = ['#2095f2', '#ff532c', '#009b82', '#775949', '#9927b0', '#57be59', '#9b26b2'];
-            $data = (object)[];
-
-            $data->title = $items->schedule->teacher_subject->teacher->name;
-            $data->start = $items->teaching_date . ' ' . $items->attendance_time;
-            $data->latitude = $items->latitude;
-            $data->longitude = $items->longitude;
-            $data->color = $hex[array_rand($hex)];
-
-            return $data;
+        $hex = ['#2095f2', '#ff532c', '#009b82', '#775949', '#9927b0', '#57be59', '#9b26b2'];
+        $map = $attendances->map(function ($items) use ($hex) {
+            return (object)[
+                'id' => $items->id,
+                'title' => $items->schedule->teacher_subject->teacher->name,
+                'start' => $items->teaching_date . ' ' . $items->attendance_time,
+                'latitude' => $items->latitude,
+                'longitude' => $items->longitude,
+                'color' => $hex[array_rand($hex)],
+            ];
         });
 
         return view('admin.attendance.index', ['attendances' => $map]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Attendance  $attendance
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Attendance $attendance)
+    {
+        // return response($attendance);
+        return view('admin.attendance.show', ['attendance' => $attendance]);
     }
 
     public function print(Teacher $teacher)

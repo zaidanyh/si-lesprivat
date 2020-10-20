@@ -80,19 +80,8 @@
                 </script>
             </div>
         </div>
-        <div class="form-group row">
-            <label for="latitude" class="col-sm-2 col-form-label">Latitude</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="latitude" name="latitude" value="{{ $teacher->latitude }}">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="longitude" class="col-sm-2 col-form-label">Longitude</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="longitude" name="longitude"
-                    value="{{ $teacher->longitude }}">
-            </div>
-        </div>
+        <input type="hidden" class="form-control" id="latitude" name="latitude" value="{{ $teacher->latitude }}">
+        <input type="hidden" class="form-control" id="longitude" name="longitude" value="{{ $teacher->longitude }}">
         <div class="form-group row">
             <label for="birth_date" class="col-sm-2 col-form-label">Tanggal Lahir</label>
             <div class="col-sm-10">
@@ -112,7 +101,7 @@
         <div class="form-group row">
             <label for="gender" class="col-sm-2 col-form-label">Jenis Kelamin</label>
             <div class="col-sm-10">
-                <select class="form-control" id="gender">
+                <select class="form-control" id="gender" name="gender">
                     <option value="Laki-laki">Laki-laki</option>
                     <option value="Perempuan">Perempuan</option>
                 </select>

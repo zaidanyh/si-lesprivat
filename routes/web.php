@@ -41,7 +41,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::put('/teacher_subject/{teacher}', [TeacherSubjectController::class, 'update'])->name('teacher_subject.update');
 
     Route::resource('schedule', ScheduleController::class)->only(['index', 'store']);
-    Route::resource('attendance', AttendanceController::class)->only(['index']);
+    Route::resource('attendance', AttendanceController::class)->only(['index', 'show']);
 
     Route::get('/teacher/attendance/{teacher}', [AttendanceController::class, 'print'])->name('teacher.attendance.print');
 });

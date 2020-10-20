@@ -79,18 +79,8 @@
                 </script>
             </div>
         </div>
-        <div class="form-group row">
-            <label for="latitude" class="col-sm-2 col-form-label">Latitude</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="latitude" name="latitude">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="longitude" class="col-sm-2 col-form-label">Longitude</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="longitude" name="longitude">
-            </div>
-        </div>
+        <input type="hidden" class="form-control" id="latitude" name="latitude">
+        <input type="hidden" class="form-control" id="longitude" name="longitude">
         <div class="form-group row">
             <label for="birth_date" class="col-sm-2 col-form-label">Tanggal Lahir</label>
             <div class="col-sm-10">

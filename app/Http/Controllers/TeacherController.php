@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Teacher;
-use App\Models\TeacherSubject;
 use Illuminate\Http\Request;
 
 class TeacherController extends Controller
@@ -37,13 +36,11 @@ class TeacherController extends Controller
     public function store(Request $request)
     {
         $request->merge(['password' => bcrypt($request->password)]);
-
         $data = $request->except('photo');
-        $photo = cloudinary()->upload($request->file('photo')->getRealPath())->getSecurePath();
-        $data['photo'] = $photo;
+        $data['photo'] = cloudinary()->upload($request->file('photo')->getRealPath())->getSecurePath();
 
         Teacher::create($data);
-        return redirect()->route('teacher.index');
+        return redirect()->route('teacher.index')->with(['success' => 'Data Berhasil Dtambahkan']);
     }
 
     /**
@@ -77,21 +74,14 @@ class TeacherController extends Controller
      */
     public function update(Request $request, Teacher $teacher)
     {
-        Teacher::where('id', $teacher->id)
-            ->update([
-                'name' => $request->name,
-                'phone' => $request->phone,
-                'address' => $request->address,
-                'latitude' => $request->latitude,
-                'longitude' => $request->longitude,
-                'birth_date' => $request->birth_date,
-                'email' => $request->email,
-                'password' => $request->password != '' ? bcrypt($request->password) : $teacher->password,
-                'education' => $request->education,
-                'gpa' => $request->gpa,
-                'photo' => $request->hasFile('photo') ? cloudinary()->upload($request->file('photo')->getRealPath())->getSecurePath() : $teacher->photo,
-            ]);
-        return redirect()->route('teacher.index');
+        $password = is_null($request->password) ? $teacher->password : bcrypt($request->password);
+        $request->merge(['password' => $password]);
+        $data = $request->except('photo');
+        $photo = $request->hasFile('photo') ? cloudinary()->upload($request->file('photo')->getRealPath())->getSecurePath() : $teacher->photo;
+        $data['photo'] = $photo;
+
+        $teacher->update($data);
+        return redirect()->route('teacher.index')->with(['success' => 'Data Berhasil Diubah']);
     }
 
     /**
@@ -103,6 +93,6 @@ class TeacherController extends Controller
     public function destroy(Teacher $teacher)
     {
         Teacher::destroy($teacher->id);
-        return redirect()->route('teacher.index');
+        return redirect()->route('teacher.index')->with(['success' => 'Data Berhasil Dihapus']);
     }
 }

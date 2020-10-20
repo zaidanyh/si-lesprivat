@@ -20,19 +20,17 @@ class ScheduleController extends Controller
         $students = Student::all();
         $teacher_subjects = TeacherSubject::all();
 
-        $map = $schedules->map(function ($items) {
-            $hex = ['#2095f2', '#ff532c', '#009b82', '#775949', '#9927b0', '#57be59', '#9b26b2'];
-            $data = (object)[];
-
-            $data->id = $items->id;
-            $data->title = $items->student->name;
-            $data->start = $items->date . ' ' . $items->start_time;
-            $data->end = $items->date . ' ' . $items->end_time;
-            $data->student = $items->student->id;
-            $data->teacher = $items->teacher_subject->teacher->id;
-            $data->color = $hex[array_rand($hex)];
-
-            return $data;
+        $hex = ['#2095f2', '#ff532c', '#009b82', '#775949', '#9927b0', '#57be59', '#9b26b2'];
+        $map = $schedules->map(function ($items) use ($hex) {
+            return (object)[
+                'id' => $items->id,
+                'title' => $items->student->name,
+                'start' => $items->date . ' ' . $items->start_time,
+                'end' => $items->date . ' ' . $items->end_time,
+                'student' => $items->student->id,
+                'teacher' => $items->teacher_subject->teacher->id,
+                'color' => $hex[array_rand($hex)],
+            ];
         });
 
         return view('admin.schedule.index', ['schedules' => $map, 'students' => $students, 'teacher_subjects' => $teacher_subjects]);
@@ -56,6 +54,6 @@ class ScheduleController extends Controller
                 'teacher_subject_id' => $request->teacher_subject_id,
             ]
         );
-        return redirect()->route('schedule.index');
+        return redirect()->route('schedule.index')->with(['success' => 'Data Berhasil Ditambahkan']);
     }
 }

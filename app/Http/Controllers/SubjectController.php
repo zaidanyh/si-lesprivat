@@ -36,7 +36,7 @@ class SubjectController extends Controller
     public function store(Request $request)
     {
         Subject::create($request->all());
-        return redirect()->route('subject.index');
+        return redirect()->route('subject.index')->with(['success' => 'Data Berhasil Ditambahkan']);
     }
 
     /**
@@ -59,12 +59,8 @@ class SubjectController extends Controller
      */
     public function update(Request $request, Subject $subject)
     {
-        Subject::where('id', $subject->id)
-            ->update([
-              'name' => $request->name,
-              'stage' => $request->stage
-            ]);
-        return redirect()->route('subject.index');
+        $subject->update($request->all());
+        return redirect()->route('subject.index')->with(['success' => 'Data Berhasil Diubah']);
     }
 
     /**
@@ -76,6 +72,6 @@ class SubjectController extends Controller
     public function destroy(Subject $subject)
     {
         Subject::destroy($subject->id);
-        return redirect()->route('subject.index');
+        return redirect()->route('subject.index')->with(['success' => 'Data Berhasil Dihapus']);
     }
 }

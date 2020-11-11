@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Schedule;
 use App\Models\Student;
+use App\Models\Subject;
 use App\Models\TeacherSubject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -47,7 +48,7 @@ class StudentController extends Controller
         if ($student) {
             if (Hash::check($request->password, $student->password)) {
                 $token = $student->createToken('studentTokenApi', ['profile:read', 'profile:update', 'schedule:read'])->plainTextToken;
-                return response(['message' => 'success', 'token' => $token], 200);
+                return response(['message' => 'success', 'id' => $student->id, 'token' => $token], 200);
             } else {
                 return response(['message' => 'failed'], 422);
             }
@@ -61,73 +62,6 @@ class StudentController extends Controller
         $student->tokens()->delete();
 
         return response(['message' => 'success'], 200);
-    }
-
-    public function schedules(Student $student)
-    {
-        return response($student->schedules, 200);
-    }
-
-    public function schedule(Student $student, Schedule $schedule)
-    {
-        return response($schedule, 200);
-    }
-
-    public function search(Request $request, Student $student)
-    {
-        $teacher_subject = TeacherSubject::with(['teacher', 'subject'])->get();
-
-        $filtered = $teacher_subject->where('subject.name', $request->name)->where('subject.stage', $request->stage);
-
-        $latitude1 = $student->latitude;
-        $longitude1 = $student->longitude;
-        $latitude2 = $filtered->teacher->latitude;
-        $longitude2 = $filtered->teacher->longitude;
-
-        $map = $filtered->map(function ($items) use ($latitude1, $longitude1, $latitude2, $longitude2) {
-            return (object)[
-                'id' => $items->id,
-                'teacher' => $items->teacher,
-                'teacher->distance' => $this->getDistance($latitude1, $longitude1, $latitude2, $longitude2),
-                'subject' => $items->subject,
-            ];
-        });
-
-        return response($map, 200);
-    }
-
-    private function getDistance($latitude1, $longitude1, $latitude2, $longitude2)
-    {
-        $earth_radius = 6371;
-
-        $dLat = deg2rad($latitude2 - $latitude1);
-        $dLon = deg2rad($longitude2 - $longitude1);
-
-        $a = sin($dLat / 2) * sin($dLat / 2) + cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) * sin($dLon / 2) * sin($dLon / 2);
-        $c = 2 * asin(sqrt($a));
-        $d = $earth_radius * $c;
-
-        return round($d, 2);
-    }
-
-    public function appointment(Request $request, Student $student)
-    {
-        $validator = Validator::make($request->all(), [
-            'date' => 'required|date_format:"Y-m-d"',
-            'start_time' => 'required|date_format:"H:i:s"',
-            'end_time' => 'required|date_format:"H:i:s"',
-            'teacher_subject_id' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response(['errors' => $validator->errors()->all()], 422);
-        }
-
-        $request->merge(['student_id' => $student->id]);
-
-        Schedule::create($request->all());
-
-        return response(['message' => 'created'], 201);
     }
 
     /**

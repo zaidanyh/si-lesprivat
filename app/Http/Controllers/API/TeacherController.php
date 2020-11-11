@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\Schedule;
+use App\Models\Student;
 use App\Models\Teacher;
+use App\Models\TeacherSubject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -68,53 +70,44 @@ class TeacherController extends Controller
         return response(['message' => 'success'], 200);
     }
 
-    public function schedules(Teacher $teacher)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request, Student $student)
     {
-        $schedules = $teacher->schedules;
-        return response($schedules, 200);
+        $teacher_subject = TeacherSubject::with(['teacher', 'subject'])->get();
+
+        $filtered = $teacher_subject->where('subject.name', $request->name)->where('subject.stage', $request->stage);
+
+        $latitude1 = $student->latitude;
+        $longitude1 = $student->longitude;
+
+        $map = $filtered->map(function ($items) use ($latitude1, $longitude1) {
+            return (object)[
+                'id' => $items->id,
+                'teacher' => $items->teacher,
+                'teacher->distance' => $this->getDistance($latitude1, $longitude1, $items->teacher->latitude, $items->teacher->longitude),
+                'subject' => $items->subject,
+            ];
+        });
+
+        return response($map, 200);
     }
 
-    public function schedule(Teacher $teacher, Schedule $schedule)
+    private function getDistance($latitude1, $longitude1, $latitude2, $longitude2)
     {
-        return response($schedule, 200);
-    }
+        $earth_radius = 6371;
 
-    public function schedule_attendance(Request $request, Teacher $teacher, Schedule $schedule)
-    {
-        $validator = Validator::make($request->all(), [
-            'teaching_date' => 'required|date_format:"Y-m-d"',
-            'attendance_time' => 'required|date_format:"H:i:s"',
-            'leave_time' => 'required|date_format:"H:i:s"',
-            'latitude' => 'required',
-            'longitude' => 'required',
-        ]);
+        $dLat = deg2rad($latitude2 - $latitude1);
+        $dLon = deg2rad($longitude2 - $longitude1);
 
-        if ($validator->fails()) {
-            return response(['message' => $validator->errors()->all()], 422);
-        }
+        $a = sin($dLat / 2) * sin($dLat / 2) + cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) * sin($dLon / 2) * sin($dLon / 2);
+        $c = 2 * asin(sqrt($a));
+        $d = $earth_radius * $c;
 
-        $status = $this->check_attendance(
-            $request->teaching_date,
-            $request->attendance_time,
-            $request->leave_time,
-            $schedule->date,
-            $schedule->start_time,
-            $schedule->end_time
-        );
-
-        $request->merge(['schedule_id' => $schedule->id, 'status' => $status]);
-
-        Attendance::create($request->all());
-
-        return response(['message' => 'created'], 201);
-    }
-
-    private function check_attendance($teaching_date, $attendance_time, $leave_time, $schedule_date, $schedule_start_time, $schedule_end_time)
-    {
-        if ($teaching_date ==  $schedule_date && $attendance_time < $schedule_start_time && $leave_time > $schedule_end_time) {
-            return 'Tepat Waktu';
-        }
-        return 'Terlambat';
+        return round($d, 2);
     }
 
     /**
